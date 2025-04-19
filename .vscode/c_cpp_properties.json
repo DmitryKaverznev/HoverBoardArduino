@@ -1,0 +1,68 @@
+//
+// !!! WARNING !!! AUTO-GENERATED FILE!
+// PLEASE DO NOT MODIFY IT AND USE "platformio.ini":
+// https://docs.platformio.org/page/projectconf/section_env_build.html#build-flags
+//
+{
+    "configurations": [
+        {
+            "name": "PlatformIO",
+            "includePath": [
+                "c:/Users/User/Documents/OnStage/HoverboardFirmaware/arduino/include",
+                "c:/Users/User/Documents/OnStage/HoverboardFirmaware/arduino/src",
+                "c:/Users/User/Documents/OnStage/HoverboardFirmaware/arduino/.pio/libdeps/due/DueTimer",
+                "C:/Users/User/.platformio/packages/framework-arduino-sam/cores/arduino",
+                "C:/Users/User/.platformio/packages/framework-arduino-sam/system/libsam",
+                "C:/Users/User/.platformio/packages/framework-arduino-sam/system/CMSIS/CMSIS/Include",
+                "C:/Users/User/.platformio/packages/framework-arduino-sam/system/CMSIS/Device/ATMEL",
+                "C:/Users/User/.platformio/packages/framework-arduino-sam/variants/arduino_due_x",
+                "c:/Users/User/Documents/OnStage/HoverboardFirmaware/arduino/.pio/libdeps/due/Unity/src",
+                "C:/Users/User/.platformio/packages/framework-arduino-sam/libraries/HID/src",
+                "C:/Users/User/.platformio/packages/framework-arduino-sam/libraries/SPI/src",
+                "C:/Users/User/.platformio/packages/framework-arduino-sam/libraries/Wire/src",
+                ""
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true,
+                "path": [
+                    "c:/Users/User/Documents/OnStage/HoverboardFirmaware/arduino/include",
+                    "c:/Users/User/Documents/OnStage/HoverboardFirmaware/arduino/src",
+                    "c:/Users/User/Documents/OnStage/HoverboardFirmaware/arduino/.pio/libdeps/due/DueTimer",
+                    "C:/Users/User/.platformio/packages/framework-arduino-sam/cores/arduino",
+                    "C:/Users/User/.platformio/packages/framework-arduino-sam/system/libsam",
+                    "C:/Users/User/.platformio/packages/framework-arduino-sam/system/CMSIS/CMSIS/Include",
+                    "C:/Users/User/.platformio/packages/framework-arduino-sam/system/CMSIS/Device/ATMEL",
+                    "C:/Users/User/.platformio/packages/framework-arduino-sam/variants/arduino_due_x",
+                    "c:/Users/User/Documents/OnStage/HoverboardFirmaware/arduino/.pio/libdeps/due/Unity/src",
+                    "C:/Users/User/.platformio/packages/framework-arduino-sam/libraries/HID/src",
+                    "C:/Users/User/.platformio/packages/framework-arduino-sam/libraries/SPI/src",
+                    "C:/Users/User/.platformio/packages/framework-arduino-sam/libraries/Wire/src",
+                    ""
+                ]
+            },
+            "defines": [
+                "PLATFORMIO=60118",
+                "__SAM3X8E__",
+                "ARDUINO_SAM_DUE",
+                "ARDUINO=10805",
+                "F_CPU=84000000L",
+                "USBCON",
+                "USB_VID=0x2341",
+                "USB_PID=0x003E",
+                "USB_PRODUCT=\"Arduino Due\"",
+                "USB_MANUFACTURER=\"Arduino\"",
+                "ARDUINO_ARCH_SAM",
+                ""
+            ],
+            "cStandard": "gnu11",
+            "cppStandard": "gnu++11",
+            "compilerPath": "C:/Users/User/.platformio/packages/toolchain-gccarmnoneeabi@1.70201.0/bin/arm-none-eabi-gcc.exe",
+            "compilerArgs": [
+                "-mcpu=cortex-m3",
+                "-mthumb",
+                ""
+            ]
+        }
+    ],
+    "version": 4
+}
