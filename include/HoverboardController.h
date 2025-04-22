@@ -26,11 +26,19 @@ typedef struct {
     uint16_t checksum;
 } SerialFeedback;
 
+typedef struct {
+    int16_t speedStart = 0;
+    int16_t speedEnd = 0;
+    uint32_t timeStart = 0;
+    uint32_t timeEnd = 0;
+} SoftMove;
+
 class HoverboardController {
 public:
     HoverboardController(USARTClass& hoverSerial);
     void begin();
     void set(int16_t steer, int16_t speed);
+    void setSoft(int16_t steer, int16_t time, int16_t speedEnd);
     SerialFeedback getFeedback();
     void timerInterrupt();
     void updateReceive();
@@ -42,11 +50,13 @@ private:
     SerialFeedback _feedback;
     SerialFeedback _newFeedback;
     unsigned long _lastSendTime;
+    SoftMove softMove;
     uint8_t _idx;
     uint16_t _bufStartFrame;
     byte _incomingByte;
     byte _incomingBytePrev;
 
+    void _updateSoftMove();
     void _send();
 };
 

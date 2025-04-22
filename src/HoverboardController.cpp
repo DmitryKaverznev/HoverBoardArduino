@@ -7,8 +7,12 @@ HoverboardController::HoverboardController(USARTClass& hoverSerial) : _hoverSeri
     _bufStartFrame = 0;
     _incomingByte = 0;
     _incomingBytePrev = 0;
+    
+    _command.start = 0;
+    _command.steer = 0;
+    _command.speed = 0;
+    _command.checksum = 0;
 }
-
 
 void HoverboardController::begin() {
 
@@ -16,8 +20,38 @@ void HoverboardController::begin() {
 }
 
 void HoverboardController::set(int16_t steer, int16_t speed) {
+    softMove.speedStart = speed;
     _command.steer = steer;
     _command.speed = speed;
+}
+
+void HoverboardController::setSoft(int16_t steer, int16_t time, int16_t speedEnd) {
+    softMove.speedStart = _command.speed;
+    softMove.speedEnd = speedEnd;
+    softMove.timeStart = millis();
+    softMove.timeEnd = softMove.timeStart + time;
+    _command.steer = steer;
+}
+
+void HoverboardController::_updateSoftMove() {
+    if (softMove.timeEnd == 0) return;
+
+    uint32_t currentTime = millis();
+
+    if (currentTime >= softMove.timeEnd) {
+        _command.speed = softMove.speedEnd;
+        softMove = {};
+        return;
+    }
+
+    uint32_t elapsed = currentTime - softMove.timeStart;
+    uint32_t duration = softMove.timeEnd - softMove.timeStart;
+    if (duration == 0) return;
+
+    int32_t speedDiff = softMove.speedEnd - softMove.speedStart;
+    int16_t newSpeed = softMove.speedStart + (speedDiff * elapsed) / duration;
+    
+    _command.speed = newSpeed;
 }
 
 SerialFeedback HoverboardController::getFeedback() {
@@ -66,5 +100,7 @@ void HoverboardController::updateReceive() {
 }
 
 void HoverboardController::timerInterrupt() {
+    updateReceive();
+    _updateSoftMove();
     _send();
 }

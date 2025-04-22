@@ -9,6 +9,7 @@ namespace motors {
     extern HoverboardController hoverDown;
 
     void set(int16_t steer, int16_t speed);
+    void setSoft(int16_t steer, int16_t time, int16_t speedEnd);
     void init();
 }
 
