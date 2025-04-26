@@ -33,31 +33,31 @@ typedef struct {
     uint32_t timeEnd = 0;
 } SoftMove;
 
+enum class DebugMode {
+    DISABLE,
+    ENABLE
+};
+
 class HoverboardController {
 public:
     HoverboardController(USARTClass& hoverSerial);
     void begin();
     void set(int16_t steer, int16_t speed);
     void setSoft(int16_t steer, int16_t time, int16_t speedEnd);
-    SerialFeedback getFeedback();
     void timerInterrupt();
     void updateReceive();
-
+    void setDebug(DebugMode debugMode);
 
 private:
     USARTClass& _hoverSerial;
     SerialCommand _command;
-    SerialFeedback _feedback;
-    SerialFeedback _newFeedback;
-    unsigned long _lastSendTime;
     SoftMove softMove;
-    uint8_t _idx;
-    uint16_t _bufStartFrame;
-    byte _incomingByte;
-    byte _incomingBytePrev;
+    DebugMode _debugMode;
+
 
     void _updateSoftMove();
     void _send();
+    void _softMoveDebug();
 };
 
 #endif // HOVERBOARDCONTROLLER_H
