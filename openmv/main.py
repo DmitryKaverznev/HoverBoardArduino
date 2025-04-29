@@ -1,42 +1,59 @@
-import sensor, image
+import sensor
 import pyb
-
+import time
 
 sensor.reset()
-sensor.set_pixformat(sensor.GRAYSCALE)
-sensor.set_framesize(sensor.HD)
+sensor.set_pixformat(sensor.RGB565)
+sensor.set_framesize(sensor.QQVGA)
+sensor.skip_frames(time=2000)
+sensor.set_auto_gain(False)
+sensor.set_auto_whitebal(False)
+clock = time.clock()
 
 
-uart = pyb.UART(3, 115200)
+uart = pyb.UART(1, 115200)
 uart.init(115200, bits=8)
 
-
 BITE_START = 0xAB
-DELAY = 1000
+DELAY = 100
+
+red_led = pyb.LED(1)
+green_led = pyb.LED(2)
 
 def send_result(data: int):
-    byte = bytearray(BITE_START.value + data)
-    uart.write(byte)
+    high_byte = (data >> 8) & 0xFF
+    low_byte = data & 0xFF
+    byte_data = bytearray([BITE_START, high_byte, low_byte])
+    uart.write(byte_data)
 
-
-def find_aruco(sensor: sensor.Sensor):
+def get_tags(sensor: sensor.Sensor):
     img = sensor.snapshot()
+    tags = img.find_apriltags()
 
-    markers = img.find_aruco_markers(
-        family=image.ARUCO_DICT_4X4, 
-        threshold=100
-    )
+    if tags:
+        for tag in tags:
+            img.draw_rectangle(tag.rect, color=(255, 0, 0))
+            img.draw_cross(tag.cx, tag.cy, color=(0, 255, 0))
 
-    if markers:
-        for marker in markers:
-            print(f"ID: {marker.id()}, Rotation: {marker.rotation()}, Center: ({marker.cx()}, {marker.cy()})")
-    
-    return markers
+            print(f"ID: {tag.id}")
+
+    return tags
 
 while True:
-    markers = find_aruco(sensor)
-    
-    if len(markers) != 0:
-        send_result(markers[0].id())
+    clock.tick()
+
+    markers = get_tags(sensor)
+
+    if markers:
+        send_result(markers[0].id)
+
+        if int(markers[0].id) == 2:
+            green_led.on()
+        else:
+            red_led.on()
+
 
     pyb.delay(DELAY)
+
+    red_led.off()
+    green_led.off()

@@ -4,7 +4,7 @@
 Camera::Camera(USARTClass& cameraSerial) : _cameraSerial(cameraSerial) {}
 
 void Camera::begin() {
-  _cameraSerial.begin(9600);
+  _cameraSerial.begin(115200);
 }
 
 void Camera::timerInterrupt() {
@@ -12,7 +12,7 @@ void Camera::timerInterrupt() {
 }
 
 void Camera::_receive() {
-    if (_cameraSerial.available() > 0)
+    if (_cameraSerial.available() > 3)
     {
         uint8_t bites[BITE_LEN];
         _cameraSerial.readBytes(bites, BITE_LEN);

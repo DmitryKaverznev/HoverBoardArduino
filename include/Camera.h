@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 
-#define BITE_LEN 2
+#define BITE_LEN 3
 #define START_BITE 0xAB
 
 class Camera {

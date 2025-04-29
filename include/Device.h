@@ -1,4 +1,3 @@
-// motor.h
 #ifndef DEVISE_H
 #define DEVISE_H
 
