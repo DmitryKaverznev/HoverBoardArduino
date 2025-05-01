@@ -3,19 +3,24 @@
 
 #include <Arduino.h>
 
-#define BITE_LEN 3
 #define START_BITE 0xAB
+
+typedef struct {
+    uint16_t id;
+    uint16_t cx;
+    uint16_t cy;
+} ReciveData;
 
 class Camera {
 public:
     Camera(USARTClass& cameraSerial);
     void timerInterrupt();
     void begin();
-    uint16_t getCode();
+    ReciveData Camera::getRecive();
 private:
     USARTClass& _cameraSerial;
+    ReciveData _reciveData;
     
-    uint16_t _code = 0;
     void _receive();
     
 };

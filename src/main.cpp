@@ -26,21 +26,8 @@ void setup() {
 
 
 void loop() {
-    Serial.println(device::camera.getCode());
-    
-    if (device::camera.getCode() == CORRECT_CAMERA_CODE)
-    {
-        device::motorSetSoft(MOTOR_STEER, TIME_INCREASE, MOTOR_SPEED);
-        delay(TIME_INCREASE);
-
-        device::motorSet(MOTOR_STEER, MOTOR_SPEED);
-        delay(TIME_NORMAL);
-
-        device::motorSetSoft(MOTOR_STEER, TIME_DECREASE, MOTOR_SPEED_STOP);
-        delay(TIME_DECREASE);
-
-        while (true);
-        
-    }
+    Serial.println(device::camera.getRecive().id);
+    Serial.println(device::camera.getRecive().cx);
+    Serial.println(device::camera.getRecive().cy);
 
 }

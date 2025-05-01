@@ -20,10 +20,26 @@ DELAY = 100
 red_led = pyb.LED(1)
 green_led = pyb.LED(2)
 
-def send_result(data: int):
-    high_byte = (data >> 8) & 0xFF
-    low_byte = data & 0xFF
-    byte_data = bytearray([BITE_START, high_byte, low_byte])
+def send_result(data):
+    high_byte_id = (data.id() >> 8) & 0xFF
+    low_byte_id = data.id() & 0xFF
+
+    high_byte_cx = (data.cx() >> 8) & 0xFF
+    low_byte_cx = data.cx() & 0xFF
+
+    high_byte_cy = (data.cy() >> 8) & 0xFF
+    low_byte_cy = data.cy() & 0xFF
+
+    checksum = BITE_START ^ high_byte_id ^ low_byte_id ^ high_byte_cx ^ low_byte_cx ^ high_byte_cy ^ low_byte_cy
+
+    byte_data = bytearray([BITE_START,
+                            high_byte_id,
+                            low_byte_id,
+                            high_byte_cx,
+                            low_byte_cx,
+                            high_byte_cy,
+                            low_byte_cy,
+                            checksum      ])
     uart.write(byte_data)
 
 def get_tags(sensor: sensor.Sensor):
@@ -45,7 +61,7 @@ while True:
     markers = get_tags(sensor)
 
     if markers:
-        send_result(markers[0].id)
+        send_result(markers[0])
 
         if int(markers[0].id) == 2:
             green_led.on()

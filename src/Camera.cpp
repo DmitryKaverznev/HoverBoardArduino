@@ -12,18 +12,30 @@ void Camera::timerInterrupt() {
 }
 
 void Camera::_receive() {
-    if (_cameraSerial.available() > 3)
-    {
-        uint8_t bites[BITE_LEN];
-        _cameraSerial.readBytes(bites, BITE_LEN);
+    uint8_t biteLen = sizeof(ReciveData);
 
-        if (bites[0] == START_BITE)
-        {
-            _code = ((uint16_t)bites[1] << 8) | bites[2];
+    if (_cameraSerial.available() > biteLen)
+    {
+        uint8_t bites[biteLen];
+        _cameraSerial.readBytes(bites, biteLen);
+        
+        if (START_BITE != bites[0]) return;
+        
+
+        uint8_t checksum = bites[0];
+        for (uint8_t i = 0; i < biteLen - 1; i++) {
+            checksum ^= bites[i];
         }
+        
+        if (checksum != bites[biteLen - 1]) return;
+
+        _reciveData = {};
+        _reciveData.id = (bites[1] << 8) | bites[2];
+        _reciveData.cx = (bites[3] << 8) | bites[4];
+        _reciveData.cy = (bites[5] << 8) | bites[6];
     }
 }
 
-uint16_t Camera::getCode() {
-    return _code;
+ReciveData Camera::getRecive() {
+    return _reciveData;
 }
