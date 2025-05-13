@@ -11,7 +11,7 @@ sensor.set_auto_whitebal(False)
 clock = time.clock()
 
 
-uart = pyb.UART(1, 115200)
+uart = pyb.UART(3, 115200)
 uart.init(115200, bits=8)
 
 BITE_START = 0xAB
@@ -21,16 +21,22 @@ red_led = pyb.LED(1)
 green_led = pyb.LED(2)
 
 def send_result(data):
-    high_byte_id = (data.id() >> 8) & 0xFF
-    low_byte_id = data.id() & 0xFF
+    high_byte_id = (data.id >> 8) & 0xFF
+    low_byte_id = data.id & 0xFF
 
-    high_byte_cx = (data.cx() >> 8) & 0xFF
-    low_byte_cx = data.cx() & 0xFF
+    high_byte_cx = (data.cx >> 8) & 0xFF
+    low_byte_cx = data.cx & 0xFF
 
-    high_byte_cy = (data.cy() >> 8) & 0xFF
-    low_byte_cy = data.cy() & 0xFF
+    high_byte_cy = (data.cy >> 8) & 0xFF
+    low_byte_cy = data.cy & 0xFF
 
-    checksum = BITE_START ^ high_byte_id ^ low_byte_id ^ high_byte_cx ^ low_byte_cx ^ high_byte_cy ^ low_byte_cy
+    high_byte_w = (data.w >> 8) & 0xFF
+    low_byte_w = data.w & 0xFF
+
+    checksum = BITE_START ^ high_byte_id ^ low_byte_id \
+                            ^ high_byte_cx ^ low_byte_cx ^ \
+                            high_byte_cy ^ low_byte_cy \
+                            ^ high_byte_w ^ low_byte_w
 
     byte_data = bytearray([BITE_START,
                             high_byte_id,
@@ -39,7 +45,9 @@ def send_result(data):
                             low_byte_cx,
                             high_byte_cy,
                             low_byte_cy,
-                            checksum      ])
+                            high_byte_w,
+                            low_byte_w,
+                            checksum])
     uart.write(byte_data)
 
 def get_tags(sensor: sensor.Sensor):
@@ -51,7 +59,7 @@ def get_tags(sensor: sensor.Sensor):
             img.draw_rectangle(tag.rect, color=(255, 0, 0))
             img.draw_cross(tag.cx, tag.cy, color=(0, 255, 0))
 
-            print(f"ID: {tag.id}")
+            print(f"ID: {tag.id}, W: {int(tag.w)}, CX: {tag.cx}, CY: {tag.cy}")
 
     return tags
 
@@ -67,6 +75,7 @@ while True:
             green_led.on()
         else:
             red_led.on()
+
 
 
     pyb.delay(DELAY)

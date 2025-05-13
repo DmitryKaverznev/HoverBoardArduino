@@ -1,33 +1,48 @@
 #include <Arduino.h>
 #include "Device.h"
 
-#define CORRECT_CAMERA_CODE 2
 
-#define TIME_INCREASE 500
-#define TIME_NORMAL 500
-#define TIME_DECREASE 500
-
-
-#define MOTOR_SPEED_STOP 0
-#define MOTOR_SPEED 100
-
-#define MOTOR_STEER 0
 
 void setup() {
     Serial.begin(115200);
+ 
 
-    device::motorsInit();
-    device::cameraInit();
-    device::timersInit();
+    dev::hoverBoardInit();
 
-    device::hoverUp.setDebug(DebugMode::ENABLE);
+    dev::hoverBoardSet(0, 0);
+    delay(1000);
+
+    dev::cameraInit();
+    dev::sonarInit();
+    dev::motorInit();
+    dev::motorCalibration();
+    dev::servoInit();
+    dev::closeCap();
+    dev::timersInit();
+
+
+    dev::waitSonarAvarage(100);
+    delay(500);
+    
+    dev::goToHouse();
+    dev::hoverBoardSet(0, 0);
+    
+    delay(500);
+    dev::hoverBoardSet(0, -50);
+    delay(750);
+    dev::hoverBoardSet(0, 0);
+    delay(500);
+    dev::hoverBoardRotate180();
+    dev::hoverBoardSet(0, 0);
+    dev::goMeters(2);
+
+    delay(2000);
+    dev::openCap();
+    dev::upMotor();
 }
 
 
 
 void loop() {
-    Serial.println(device::camera.getRecive().id);
-    Serial.println(device::camera.getRecive().cx);
-    Serial.println(device::camera.getRecive().cy);
-
+    // Serial.println(dev::getSonarAverage());
 }

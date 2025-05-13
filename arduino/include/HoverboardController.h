@@ -5,7 +5,6 @@
 
 #define HOVER_SERIAL_BAUD   115200
 #define START_FRAME         0xABCD
-#define TIME_SEND           100000
 
 typedef struct {
     uint16_t start;

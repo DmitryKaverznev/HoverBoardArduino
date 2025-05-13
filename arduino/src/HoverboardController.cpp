@@ -1,9 +1,6 @@
 #include "HoverboardController.h"
 
-#include <DueTimer.h>
-
 HoverboardController::HoverboardController(USARTClass& hoverSerial) : _hoverSerial(hoverSerial) {
-    
     _command.start = 0;
     _command.steer = 0;
     _command.speed = 0;
@@ -44,17 +41,21 @@ void HoverboardController::_updateSoftMove() {
     if (duration == 0) return;
 
     int32_t speedDiff = softMove.speedEnd - softMove.speedStart;
-    int16_t newSpeed = softMove.speedStart + (int16_t)(((long long)speedDiff * elapsed) / duration);
+    int16_t newSpeed = softMove.speedStart + (int16_t)(((long long) speedDiff * elapsed) / duration);
     
     _command.speed = newSpeed;
 }
 
 
 void HoverboardController::_send() {
-    _command.start = (uint16_t)START_FRAME;
-    _command.checksum = (uint16_t)(_command.start ^ _command.steer ^ _command.speed);
+    SerialCommand command = _command;
+    command.speed = command.speed * -1;
 
-    _hoverSerial.write((uint8_t *) &_command, sizeof(_command));
+    command.start = (uint16_t)START_FRAME;
+    command.checksum = (uint16_t)(command.start ^ command.steer ^ command.speed);
+
+
+    _hoverSerial.write((uint8_t *) &command, sizeof(command));
 }
 
 void HoverboardController::setDebug(DebugMode debugMode) { 

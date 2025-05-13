@@ -9,6 +9,7 @@ typedef struct {
     uint16_t id;
     uint16_t cx;
     uint16_t cy;
+    uint16_t w;
 } ReciveData;
 
 class Camera {
@@ -16,7 +17,7 @@ public:
     Camera(USARTClass& cameraSerial);
     void timerInterrupt();
     void begin();
-    ReciveData Camera::getRecive();
+    ReciveData getRecive();
 private:
     USARTClass& _cameraSerial;
     ReciveData _reciveData;

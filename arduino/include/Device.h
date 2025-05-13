@@ -1,22 +1,65 @@
 #ifndef DEVISE_H
 #define DEVISE_H
 
+#include <Servo.h>
+#include <AceSorting.h>
+
+#include "Config.h"
+
 #include "HoverboardController.h"
 #include "Camera.h"
+#include "Sonar.h"
+#include "Motor.h"
 
-namespace device {
+#define PIN_BTN_START 2
+
+namespace dev {
     extern HoverboardController hoverUp;
     extern HoverboardController hoverDown;
 
     extern Camera camera;
 
+    extern Sonar sonar1;
+    extern Sonar sonar2;
 
-    void motorSet(int16_t steer, int16_t speed);
-    void motorSetSoft(int16_t steer, int16_t time, int16_t speedEnd);
+    extern Servo servoCap;
+    extern Motor motor;
 
-    void motorsInit();
+    extern uint dists[SIZE_AVERAGE];
+    extern uint distsStep;
+
+    void hoverBoardSet(int16_t steer, int16_t speed);
+    void hoverBoardSetSoft(int16_t steer, int16_t time, int16_t speedEnd);
+    void hoverBoardRotate180();
+
+    void buttonInit();
+    void hoverBoardInit();
     void cameraInit();
+    void servoInit();
+    void motorInit();
+    void sonarInit();
     void timersInit();
+
+
+    bool getButton();
+    void waitButton();
+
+    uint getSonar();
+    uint getSonarAverage(uint time);
+    void waitSonarAvarage(uint time);
+
+    void openCap();
+    void closeCap();
+
+    void upMotor();
+
+    void waitMotorMaxCurr(uint max);
+    void motorRun(int16_t speed, int16_t time);\
+    void motorCalibration();
+
+
+    bool goToHouse();   
+    void goMeters(uint8_t meters);
 }
 
 #endif // DEVISE_H
