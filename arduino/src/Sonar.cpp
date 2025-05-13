@@ -17,6 +17,17 @@ uint Sonar::read() {
     return duration / DIST_SOUND; 
 }
 
+uint Sonar::readAverage()
+{
+    for (int i = 0; i < SIZE_AVERAGE; i++)
+    {
+        _dists[i] = read();
+    }
+
+    ace_sorting::shellSortKnuth(_dists, SIZE_AVERAGE);
+    return _dists[SIZE_AVERAGE / 2];
+}
+
 void Sonar::begin() {
     pinMode(_pinTrig, OUTPUT);
     pinMode(_pinEcho, INPUT);

@@ -11,11 +11,6 @@ Camera dev::camera(UART_CAMERA);
 Sonar dev::sonar1(PIN_SONAR_TRIK_1, PIN_SONAR_ECHO_1);
 Sonar dev::sonar2(PIN_SONAR_TRIK_2, PIN_SONAR_ECHO_2);
 
-uint dev::distsStep = 0;
-uint dev::dists[SIZE_AVERAGE];
-
-
-
 Motor dev::motor(PIN_MOTOR_PWM,
                  PIN_MOTOR_DIR_1,
                  PIN_MOTOR_DIR_2,
@@ -79,10 +74,6 @@ void dev::sonarInit()
 {
     sonar1.begin();
     sonar2.begin();
-
-    for (int i = 0; i < 10; i++) {
-        dists[i] = getSonar();
-    }
 }
 
 void dev::buttonInit() {
@@ -98,9 +89,9 @@ void dev::waitButton() {
     while (getButton());
 }
 
-uint dev::getSonar() {
-    uint dist1 = dev::sonar1.read();
-    uint dist2 = dev::sonar2.read();
+uint dev::getSonar() {/*
+    uint dist1 = dev::sonar1.readAverage();
+    uint dist2 = dev::sonar2.readAverage();
 
     if ((dist1 == 0 && dist2 != 0) || (dist1 != 0 && dist2 == 0)) {
         return max(dist1, dist2);
@@ -109,16 +100,15 @@ uint dev::getSonar() {
     }
     
     
-    return (dist1 + dist2) / 2;
+    return (dist1 + dist2) / 2;*/
+
+    return sonar1.readAverage();
 }
 
-
-void dev::waitSonarAvarage(uint time)
+void dev::waitSonar()
 {
-    uint dist = getSonarAverage(time);
-    while (dist > SONAR_DIST || dist == 0) {
-        dist = getSonarAverage(time);
-    }
+    uint dist = getSonar();
+    while (dist == 0 || dist > 50);
 }
 
 void dev::openCap()

@@ -1,7 +1,7 @@
 #define CAMERA_CODE 2
 
 #define CAMERA_DIST 100
-#define SONAR_DIST   60
+#define SONAR_DIST   40
 
 #define TIME_SEND        100000
 #define TIME_MOTOR_OPEN    5400

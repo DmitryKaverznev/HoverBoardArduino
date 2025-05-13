@@ -6,9 +6,10 @@ bool dev::goToHouse() {
 
     while (true) {  
         ReciveData data = camera.getRecive();
-        uint dist = getSonarAverage(10);
-        
-        bool sonar = dist != 0 && dist < SONAR_DIST;
+        uint dist1 = sonar1.readAverage();
+        uint dist2 = sonar2.readAverage();
+
+        bool sonar = (dist1 != 0 && dist1 < SONAR_DIST) || (dist2 != 0 && dist2 < SONAR_DIST);
         bool camera = data.id == CAMERA_CODE && data.w < CAMERA_DIST;
         
 

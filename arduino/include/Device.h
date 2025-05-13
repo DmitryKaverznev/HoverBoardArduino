@@ -2,7 +2,6 @@
 #define DEVISE_H
 
 #include <Servo.h>
-#include <AceSorting.h>
 
 #include "Config.h"
 
@@ -25,9 +24,6 @@ namespace dev {
     extern Servo servoCap;
     extern Motor motor;
 
-    extern uint dists[SIZE_AVERAGE];
-    extern uint distsStep;
-
     void hoverBoardSet(int16_t steer, int16_t speed);
     void hoverBoardSetSoft(int16_t steer, int16_t time, int16_t speedEnd);
     void hoverBoardRotate180();
@@ -45,8 +41,7 @@ namespace dev {
     void waitButton();
 
     uint getSonar();
-    uint getSonarAverage(uint time);
-    void waitSonarAvarage(uint time);
+    void waitSonar();
 
     void openCap();
     void closeCap();

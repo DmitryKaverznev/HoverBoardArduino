@@ -21,7 +21,10 @@ void setup() {
     dev::timersInit();
 
 
-    dev::waitSonarAvarage(100);
+    uint dist = dev::sonar1.readAverage();
+    while (dist == 0 || dist > 50) {
+        dist = dev::sonar1.readAverage();
+    }
     delay(500);
     
     dev::goToHouse();
@@ -44,5 +47,5 @@ void setup() {
 
 
 void loop() {
-    // Serial.println(dev::getSonarAverage());
+    Serial.println(dev::getSonar());
 }
